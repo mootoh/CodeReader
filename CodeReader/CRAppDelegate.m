@@ -2,19 +2,22 @@
 //  CRAppDelegate.m
 //  CodeReader
 //
-//  Created by 征大 高山 on 4/29/12.
+//  Created by Motohiro Takayama on 4/29/12.
 //  Copyright (c) 2012 mootoh.net. All rights reserved.
 //
 
 #import "CRAppDelegate.h"
+#import "CRTagFile.h"
 
 @implementation CRAppDelegate
 
 @synthesize window = _window;
+@synthesize basePath;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
     // Override point for customization after application launch.
+    [self createSourceTreeStructure];
     return YES;
 }
 							
@@ -43,6 +46,39 @@
 - (void)applicationWillTerminate:(UIApplication *)application
 {
     // Called when the application is about to terminate. Save data if appropriate. See also applicationDidEnterBackground:.
+}
+
+- (void) createSourceTreeStructure
+{
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
+    NSString *documentPath = [paths objectAtIndex:0];
+    
+    NSFileManager *fm = [NSFileManager defaultManager];
+    NSString *path = [documentPath stringByAppendingPathComponent:@"Samples"];
+    if (! [fm fileExistsAtPath:path]) {
+        NSError *err = nil;
+        [fm createDirectoryAtPath:path withIntermediateDirectories:YES attributes:nil error:&err];
+        if (err) {
+            NSLog(@"createSourceTreeStructure: failed in creating a directory");
+            return;
+        }
+        
+        // copy Sample code files
+        for (NSString *srcPath in [[NSBundle mainBundle] pathsForResourcesOfType:nil inDirectory:@"Samples"]) {
+            NSLog(@"srcPath = %@", srcPath);
+            NSString *toPath = [path stringByAppendingPathComponent:[srcPath lastPathComponent]];
+
+            [fm copyItemAtPath:srcPath toPath:toPath error:&err];
+            if (err) {
+                NSLog(@"createSourceTreeStructure: failed in copy a file");
+                return;
+            }
+            if ([[toPath lastPathComponent] isEqualToString:@"tags"]) {
+                CRTagFile *tagFile = [[CRTagFile alloc] initWithPath:toPath];
+            }
+        }
+    }
+    self.basePath = path;
 }
 
 @end

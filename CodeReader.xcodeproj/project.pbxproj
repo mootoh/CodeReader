@@ -20,6 +20,8 @@
 		92720759154E610000672615 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073A154E60FF00672615 /* Foundation.framework */; };
 		92720761154E610000672615 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9272075F154E610000672615 /* InfoPlist.strings */; };
 		92720764154E610000672615 /* CodeReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 92720763154E610000672615 /* CodeReaderTests.m */; };
+		9272077E154EFE5100672615 /* Samples in Resources */ = {isa = PBXBuildFile; fileRef = 9272077D154EFE5100672615 /* Samples */; };
+		92720781154F011500672615 /* CRTagFile.m in Sources */ = {isa = PBXBuildFile; fileRef = 92720780154F011500672615 /* CRTagFile.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -37,21 +39,24 @@
 		92720738154E60FF00672615 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9272073A154E60FF00672615 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
 		9272073C154E60FF00672615 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
-		92720740154E60FF00672615 /* CodeReader-Info.plist */ = {isa = PBXFileReference; path = "CodeReader-Info.plist"; sourceTree = "<group>"; };
+		92720740154E60FF00672615 /* CodeReader-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CodeReader-Info.plist"; sourceTree = "<group>"; };
 		92720742154E60FF00672615 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
 		92720744154E60FF00672615 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		92720746154E60FF00672615 /* CodeReader-Prefix.pch */ = {isa = PBXFileReference; path = "CodeReader-Prefix.pch"; sourceTree = "<group>"; };
-		92720747154E60FF00672615 /* CRAppDelegate.h */ = {isa = PBXFileReference; path = CRAppDelegate.h; sourceTree = "<group>"; };
+		92720746154E60FF00672615 /* CodeReader-Prefix.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CodeReader-Prefix.pch"; sourceTree = "<group>"; };
+		92720747154E60FF00672615 /* CRAppDelegate.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRAppDelegate.h; sourceTree = "<group>"; };
 		92720748154E60FF00672615 /* CRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRAppDelegate.m; sourceTree = "<group>"; };
 		9272074B154E60FF00672615 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
-		9272074D154E60FF00672615 /* CRViewController.h */ = {isa = PBXFileReference; path = CRViewController.h; sourceTree = "<group>"; };
+		9272074D154E60FF00672615 /* CRViewController.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CRViewController.h; sourceTree = "<group>"; };
 		9272074E154E60FF00672615 /* CRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRViewController.m; sourceTree = "<group>"; };
 		92720755154E60FF00672615 /* CodeReaderTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeReaderTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
 		92720756154E60FF00672615 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
-		9272075E154E610000672615 /* CodeReaderTests-Info.plist */ = {isa = PBXFileReference; path = "CodeReaderTests-Info.plist"; sourceTree = "<group>"; };
+		9272075E154E610000672615 /* CodeReaderTests-Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = "CodeReaderTests-Info.plist"; sourceTree = "<group>"; };
 		92720760154E610000672615 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
-		92720762154E610000672615 /* CodeReaderTests.h */ = {isa = PBXFileReference; path = CodeReaderTests.h; sourceTree = "<group>"; };
+		92720762154E610000672615 /* CodeReaderTests.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = CodeReaderTests.h; sourceTree = "<group>"; };
 		92720763154E610000672615 /* CodeReaderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeReaderTests.m; sourceTree = "<group>"; };
+		9272077D154EFE5100672615 /* Samples */ = {isa = PBXFileReference; lastKnownFileType = folder; path = Samples; sourceTree = "<group>"; };
+		9272077F154F011500672615 /* CRTagFile.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRTagFile.h; sourceTree = "<group>"; };
+		92720780154F011500672615 /* CRTagFile.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRTagFile.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -117,6 +122,8 @@
 				9272074D154E60FF00672615 /* CRViewController.h */,
 				9272074E154E60FF00672615 /* CRViewController.m */,
 				9272073F154E60FF00672615 /* Supporting Files */,
+				9272077F154F011500672615 /* CRTagFile.h */,
+				92720780154F011500672615 /* CRTagFile.m */,
 			);
 			path = CodeReader;
 			sourceTree = "<group>";
@@ -124,6 +131,7 @@
 		9272073F154E60FF00672615 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				9272077D154EFE5100672615 /* Samples */,
 				92720740154E60FF00672615 /* CodeReader-Info.plist */,
 				92720741154E60FF00672615 /* InfoPlist.strings */,
 				92720744154E60FF00672615 /* main.m */,
@@ -225,6 +233,7 @@
 			files = (
 				92720743154E60FF00672615 /* InfoPlist.strings in Resources */,
 				9272074C154E60FF00672615 /* MainStoryboard.storyboard in Resources */,
+				9272077E154EFE5100672615 /* Samples in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -262,6 +271,7 @@
 				92720745154E60FF00672615 /* main.m in Sources */,
 				92720749154E60FF00672615 /* CRAppDelegate.m in Sources */,
 				9272074F154E60FF00672615 /* CRViewController.m in Sources */,
+				92720781154F011500672615 /* CRTagFile.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
