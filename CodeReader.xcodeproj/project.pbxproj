@@ -1,0 +1,448 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		92720739154E60FF00672615 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92720738154E60FF00672615 /* UIKit.framework */; };
+		9272073B154E60FF00672615 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073A154E60FF00672615 /* Foundation.framework */; };
+		9272073D154E60FF00672615 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073C154E60FF00672615 /* CoreGraphics.framework */; };
+		92720743154E60FF00672615 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 92720741154E60FF00672615 /* InfoPlist.strings */; };
+		92720745154E60FF00672615 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 92720744154E60FF00672615 /* main.m */; };
+		92720749154E60FF00672615 /* CRAppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 92720748154E60FF00672615 /* CRAppDelegate.m */; };
+		9272074C154E60FF00672615 /* MainStoryboard.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 9272074A154E60FF00672615 /* MainStoryboard.storyboard */; };
+		9272074F154E60FF00672615 /* CRViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 9272074E154E60FF00672615 /* CRViewController.m */; };
+		92720757154E60FF00672615 /* SenTestingKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92720756154E60FF00672615 /* SenTestingKit.framework */; };
+		92720758154E610000672615 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92720738154E60FF00672615 /* UIKit.framework */; };
+		92720759154E610000672615 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073A154E60FF00672615 /* Foundation.framework */; };
+		92720761154E610000672615 /* InfoPlist.strings in Resources */ = {isa = PBXBuildFile; fileRef = 9272075F154E610000672615 /* InfoPlist.strings */; };
+		92720764154E610000672615 /* CodeReaderTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 92720763154E610000672615 /* CodeReaderTests.m */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		9272075A154E610000672615 /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 9272072B154E60FF00672615 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 92720733154E60FF00672615;
+			remoteInfo = CodeReader;
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		92720734154E60FF00672615 /* CodeReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		92720738154E60FF00672615 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
+		9272073A154E60FF00672615 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
+		9272073C154E60FF00672615 /* CoreGraphics.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreGraphics.framework; path = System/Library/Frameworks/CoreGraphics.framework; sourceTree = SDKROOT; };
+		92720740154E60FF00672615 /* CodeReader-Info.plist */ = {isa = PBXFileReference; path = "CodeReader-Info.plist"; sourceTree = "<group>"; };
+		92720742154E60FF00672615 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		92720744154E60FF00672615 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
+		92720746154E60FF00672615 /* CodeReader-Prefix.pch */ = {isa = PBXFileReference; path = "CodeReader-Prefix.pch"; sourceTree = "<group>"; };
+		92720747154E60FF00672615 /* CRAppDelegate.h */ = {isa = PBXFileReference; path = CRAppDelegate.h; sourceTree = "<group>"; };
+		92720748154E60FF00672615 /* CRAppDelegate.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRAppDelegate.m; sourceTree = "<group>"; };
+		9272074B154E60FF00672615 /* en */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = en; path = en.lproj/MainStoryboard.storyboard; sourceTree = "<group>"; };
+		9272074D154E60FF00672615 /* CRViewController.h */ = {isa = PBXFileReference; path = CRViewController.h; sourceTree = "<group>"; };
+		9272074E154E60FF00672615 /* CRViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CRViewController.m; sourceTree = "<group>"; };
+		92720755154E60FF00672615 /* CodeReaderTests.octest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CodeReaderTests.octest; sourceTree = BUILT_PRODUCTS_DIR; };
+		92720756154E60FF00672615 /* SenTestingKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SenTestingKit.framework; path = Library/Frameworks/SenTestingKit.framework; sourceTree = DEVELOPER_DIR; };
+		9272075E154E610000672615 /* CodeReaderTests-Info.plist */ = {isa = PBXFileReference; path = "CodeReaderTests-Info.plist"; sourceTree = "<group>"; };
+		92720760154E610000672615 /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/InfoPlist.strings; sourceTree = "<group>"; };
+		92720762154E610000672615 /* CodeReaderTests.h */ = {isa = PBXFileReference; path = CodeReaderTests.h; sourceTree = "<group>"; };
+		92720763154E610000672615 /* CodeReaderTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = CodeReaderTests.m; sourceTree = "<group>"; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		92720731154E60FF00672615 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92720739154E60FF00672615 /* UIKit.framework in Frameworks */,
+				9272073B154E60FF00672615 /* Foundation.framework in Frameworks */,
+				9272073D154E60FF00672615 /* CoreGraphics.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92720751154E60FF00672615 /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92720757154E60FF00672615 /* SenTestingKit.framework in Frameworks */,
+				92720758154E610000672615 /* UIKit.framework in Frameworks */,
+				92720759154E610000672615 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		92720729154E60FF00672615 = {
+			isa = PBXGroup;
+			children = (
+				9272073E154E60FF00672615 /* CodeReader */,
+				9272075C154E610000672615 /* CodeReaderTests */,
+				92720737154E60FF00672615 /* Frameworks */,
+				92720735154E60FF00672615 /* Products */,
+			);
+			sourceTree = "<group>";
+		};
+		92720735154E60FF00672615 /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				92720734154E60FF00672615 /* CodeReader.app */,
+				92720755154E60FF00672615 /* CodeReaderTests.octest */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		92720737154E60FF00672615 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				92720738154E60FF00672615 /* UIKit.framework */,
+				9272073A154E60FF00672615 /* Foundation.framework */,
+				9272073C154E60FF00672615 /* CoreGraphics.framework */,
+				92720756154E60FF00672615 /* SenTestingKit.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+		9272073E154E60FF00672615 /* CodeReader */ = {
+			isa = PBXGroup;
+			children = (
+				92720747154E60FF00672615 /* CRAppDelegate.h */,
+				92720748154E60FF00672615 /* CRAppDelegate.m */,
+				9272074A154E60FF00672615 /* MainStoryboard.storyboard */,
+				9272074D154E60FF00672615 /* CRViewController.h */,
+				9272074E154E60FF00672615 /* CRViewController.m */,
+				9272073F154E60FF00672615 /* Supporting Files */,
+			);
+			path = CodeReader;
+			sourceTree = "<group>";
+		};
+		9272073F154E60FF00672615 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				92720740154E60FF00672615 /* CodeReader-Info.plist */,
+				92720741154E60FF00672615 /* InfoPlist.strings */,
+				92720744154E60FF00672615 /* main.m */,
+				92720746154E60FF00672615 /* CodeReader-Prefix.pch */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+		9272075C154E610000672615 /* CodeReaderTests */ = {
+			isa = PBXGroup;
+			children = (
+				92720762154E610000672615 /* CodeReaderTests.h */,
+				92720763154E610000672615 /* CodeReaderTests.m */,
+				9272075D154E610000672615 /* Supporting Files */,
+			);
+			path = CodeReaderTests;
+			sourceTree = "<group>";
+		};
+		9272075D154E610000672615 /* Supporting Files */ = {
+			isa = PBXGroup;
+			children = (
+				9272075E154E610000672615 /* CodeReaderTests-Info.plist */,
+				9272075F154E610000672615 /* InfoPlist.strings */,
+			);
+			name = "Supporting Files";
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		92720733154E60FF00672615 /* CodeReader */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 92720767154E610000672615 /* Build configuration list for PBXNativeTarget "CodeReader" */;
+			buildPhases = (
+				92720730154E60FF00672615 /* Sources */,
+				92720731154E60FF00672615 /* Frameworks */,
+				92720732154E60FF00672615 /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = CodeReader;
+			productName = CodeReader;
+			productReference = 92720734154E60FF00672615 /* CodeReader.app */;
+			productType = "com.apple.product-type.application";
+		};
+		92720754154E60FF00672615 /* CodeReaderTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 9272076A154E610000672615 /* Build configuration list for PBXNativeTarget "CodeReaderTests" */;
+			buildPhases = (
+				92720750154E60FF00672615 /* Sources */,
+				92720751154E60FF00672615 /* Frameworks */,
+				92720752154E60FF00672615 /* Resources */,
+				92720753154E60FF00672615 /* ShellScript */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9272075B154E610000672615 /* PBXTargetDependency */,
+			);
+			name = CodeReaderTests;
+			productName = CodeReaderTests;
+			productReference = 92720755154E60FF00672615 /* CodeReaderTests.octest */;
+			productType = "com.apple.product-type.bundle";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		9272072B154E60FF00672615 /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				CLASSPREFIX = CR;
+				LastUpgradeCheck = 0430;
+				ORGANIZATIONNAME = mootoh.net;
+			};
+			buildConfigurationList = 9272072E154E60FF00672615 /* Build configuration list for PBXProject "CodeReader" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = 92720729154E60FF00672615;
+			productRefGroup = 92720735154E60FF00672615 /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				92720733154E60FF00672615 /* CodeReader */,
+				92720754154E60FF00672615 /* CodeReaderTests */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		92720732154E60FF00672615 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92720743154E60FF00672615 /* InfoPlist.strings in Resources */,
+				9272074C154E60FF00672615 /* MainStoryboard.storyboard in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92720752154E60FF00672615 /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92720761154E610000672615 /* InfoPlist.strings in Resources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXShellScriptBuildPhase section */
+		92720753154E60FF00672615 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "# Run the unit tests in this test bundle.\n\"${SYSTEM_DEVELOPER_DIR}/Tools/RunUnitTests\"\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		92720730154E60FF00672615 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92720745154E60FF00672615 /* main.m in Sources */,
+				92720749154E60FF00672615 /* CRAppDelegate.m in Sources */,
+				9272074F154E60FF00672615 /* CRViewController.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		92720750154E60FF00672615 /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				92720764154E610000672615 /* CodeReaderTests.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9272075B154E610000672615 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 92720733154E60FF00672615 /* CodeReader */;
+			targetProxy = 9272075A154E610000672615 /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin PBXVariantGroup section */
+		92720741154E60FF00672615 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				92720742154E60FF00672615 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+		9272074A154E60FF00672615 /* MainStoryboard.storyboard */ = {
+			isa = PBXVariantGroup;
+			children = (
+				9272074B154E60FF00672615 /* en */,
+			);
+			name = MainStoryboard.storyboard;
+			sourceTree = "<group>";
+		};
+		9272075F154E610000672615 /* InfoPlist.strings */ = {
+			isa = PBXVariantGroup;
+			children = (
+				92720760154E610000672615 /* en */,
+			);
+			name = InfoPlist.strings;
+			sourceTree = "<group>";
+		};
+/* End PBXVariantGroup section */
+
+/* Begin XCBuildConfiguration section */
+		92720765154E610000672615 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+			};
+			name = Debug;
+		};
+		92720766154E610000672615 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
+				CLANG_ENABLE_OBJC_ARC = YES;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_VERSION = com.apple.compilers.llvm.clang.1_0;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = "-DNS_BLOCK_ASSERTIONS=1";
+				SDKROOT = iphoneos;
+				TARGETED_DEVICE_FAMILY = 2;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		92720768154E610000672615 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CodeReader/CodeReader-Prefix.pch";
+				INFOPLIST_FILE = "CodeReader/CodeReader-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Debug;
+		};
+		92720769154E610000672615 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CodeReader/CodeReader-Prefix.pch";
+				INFOPLIST_FILE = "CodeReader/CodeReader-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				WRAPPER_EXTENSION = app;
+			};
+			name = Release;
+		};
+		9272076B154E610000672615 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CodeReader.app/CodeReader";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CodeReader/CodeReader-Prefix.pch";
+				INFOPLIST_FILE = "CodeReaderTests/CodeReaderTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Debug;
+		};
+		9272076C154E610000672615 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(BUILT_PRODUCTS_DIR)/CodeReader.app/CodeReader";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(SDKROOT)/Developer/Library/Frameworks",
+					"$(DEVELOPER_LIBRARY_DIR)/Frameworks",
+				);
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "CodeReader/CodeReader-Prefix.pch";
+				INFOPLIST_FILE = "CodeReaderTests/CodeReaderTests-Info.plist";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				TEST_HOST = "$(BUNDLE_LOADER)";
+				WRAPPER_EXTENSION = octest;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		9272072E154E60FF00672615 /* Build configuration list for PBXProject "CodeReader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92720765154E610000672615 /* Debug */,
+				92720766154E610000672615 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		92720767154E610000672615 /* Build configuration list for PBXNativeTarget "CodeReader" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				92720768154E610000672615 /* Debug */,
+				92720769154E610000672615 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+		9272076A154E610000672615 /* Build configuration list for PBXNativeTarget "CodeReaderTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				9272076B154E610000672615 /* Debug */,
+				9272076C154E610000672615 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 9272072B154E60FF00672615 /* Project object */;
+}
