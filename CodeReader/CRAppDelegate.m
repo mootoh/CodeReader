@@ -73,12 +73,13 @@
                 NSLog(@"createSourceTreeStructure: failed in copy a file");
                 return;
             }
-            if ([[toPath lastPathComponent] isEqualToString:@"tags"]) {
-                CRTagFile *tagFile = [[CRTagFile alloc] initWithPath:toPath];
-            }
         }
     }
     self.basePath = path;
+
+    NSString *tagPath = [path stringByAppendingPathComponent:@"tags"];
+    CRTagFile *tagFile = [[CRTagFile alloc] initWithPath:tagPath];
+    CRTag *tag = [tagFile searchFor:@"main"];
 }
 
 @end

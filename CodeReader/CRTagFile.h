@@ -8,10 +8,24 @@
 
 #import <Foundation/Foundation.h>
 
+@interface CRTag : NSObject
+
+@property (strong, nonatomic) NSString *filename;
+@property (strong, nonatomic) NSString *lineno;
+@property (strong, nonatomic) NSString *additional;
+
+- (id) initWithValues:(NSArray *)values;
+
+@end
+
+
 @interface CRTagFile : NSObject
 
-- (id) initWithPath:(NSString *)path;
-
 @property (strong, nonatomic) NSString *raw;
+@property (strong, nonatomic) NSMutableArray *keys;
+@property (strong, nonatomic) NSMutableArray *tags;
+
+- (id) initWithPath:(NSString *)path;
+- (CRTag *) searchFor:(NSString *)key;
 
 @end
