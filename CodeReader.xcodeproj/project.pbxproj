@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		920B11C71551A280007E90FA /* CRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 920B11C61551A280007E90FA /* CRCodeViewController.m */; };
 		92720739154E60FF00672615 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92720738154E60FF00672615 /* UIKit.framework */; };
 		9272073B154E60FF00672615 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073A154E60FF00672615 /* Foundation.framework */; };
 		9272073D154E60FF00672615 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073C154E60FF00672615 /* CoreGraphics.framework */; };
@@ -35,6 +36,8 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		920B11C51551A280007E90FA /* CRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CRCodeViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
+		920B11C61551A280007E90FA /* CRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CRCodeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
 		92720734154E60FF00672615 /* CodeReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92720738154E60FF00672615 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9272073A154E60FF00672615 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -118,12 +121,14 @@
 			children = (
 				92720747154E60FF00672615 /* CRAppDelegate.h */,
 				92720748154E60FF00672615 /* CRAppDelegate.m */,
-				9272074A154E60FF00672615 /* MainStoryboard.storyboard */,
 				9272074D154E60FF00672615 /* CRViewController.h */,
 				9272074E154E60FF00672615 /* CRViewController.m */,
-				9272073F154E60FF00672615 /* Supporting Files */,
+				920B11C51551A280007E90FA /* CRCodeViewController.h */,
+				920B11C61551A280007E90FA /* CRCodeViewController.m */,
 				9272077F154F011500672615 /* CRTagFile.h */,
 				92720780154F011500672615 /* CRTagFile.m */,
+				9272074A154E60FF00672615 /* MainStoryboard.storyboard */,
+				9272073F154E60FF00672615 /* Supporting Files */,
 			);
 			path = CodeReader;
 			sourceTree = "<group>";
@@ -272,6 +277,7 @@
 				92720749154E60FF00672615 /* CRAppDelegate.m in Sources */,
 				9272074F154E60FF00672615 /* CRViewController.m in Sources */,
 				92720781154F011500672615 /* CRTagFile.m in Sources */,
+				920B11C71551A280007E90FA /* CRCodeViewController.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -443,6 +449,7 @@
 				92720769154E610000672615 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		9272076A154E610000672615 /* Build configuration list for PBXNativeTarget "CodeReaderTests" */ = {
 			isa = XCConfigurationList;
@@ -451,6 +458,7 @@
 				9272076C154E610000672615 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
