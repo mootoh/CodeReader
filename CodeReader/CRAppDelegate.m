@@ -13,6 +13,7 @@
 
 @synthesize window = _window;
 @synthesize basePath;
+@synthesize tagFile;
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
@@ -78,8 +79,7 @@
     self.basePath = path;
 
     NSString *tagPath = [path stringByAppendingPathComponent:@"tags"];
-    CRTagFile *tagFile = [[CRTagFile alloc] initWithPath:tagPath];
-    CRTag *tag = [tagFile searchFor:@"main"];
+    self.tagFile = [[CRTagFile alloc] initWithPath:tagPath];
 }
 
 @end

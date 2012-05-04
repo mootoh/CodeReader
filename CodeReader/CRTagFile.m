@@ -54,7 +54,7 @@
         return [a compare:b];
     }];
 
-    return [tags objectAtIndex:index];
+    return index == NSNotFound ? nil : [tags objectAtIndex:index];
 }
 
 @end

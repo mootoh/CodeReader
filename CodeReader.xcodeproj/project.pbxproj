@@ -8,6 +8,8 @@
 
 /* Begin PBXBuildFile section */
 		920B11C71551A280007E90FA /* CRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 920B11C61551A280007E90FA /* CRCodeViewController.m */; };
+		920B11D41553C883007E90FA /* CESyntaxHighlightedCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 920B11D31553C883007E90FA /* CESyntaxHighlightedCodeView.m */; };
+		920B11D61553C8B3007E90FA /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 920B11D51553C8B3007E90FA /* CoreText.framework */; };
 		92720739154E60FF00672615 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92720738154E60FF00672615 /* UIKit.framework */; };
 		9272073B154E60FF00672615 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073A154E60FF00672615 /* Foundation.framework */; };
 		9272073D154E60FF00672615 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073C154E60FF00672615 /* CoreGraphics.framework */; };
@@ -38,6 +40,9 @@
 /* Begin PBXFileReference section */
 		920B11C51551A280007E90FA /* CRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CRCodeViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		920B11C61551A280007E90FA /* CRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CRCodeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
+		920B11D11553C879007E90FA /* CESyntaxHighlightedCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CESyntaxHighlightedCodeView.h; path = ../CESyntaxHighlightedCodeView.h; sourceTree = "<group>"; };
+		920B11D31553C883007E90FA /* CESyntaxHighlightedCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CESyntaxHighlightedCodeView.m; sourceTree = "<group>"; };
+		920B11D51553C8B3007E90FA /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		92720734154E60FF00672615 /* CodeReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92720738154E60FF00672615 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9272073A154E60FF00672615 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -67,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				920B11D61553C8B3007E90FA /* CoreText.framework in Frameworks */,
 				92720739154E60FF00672615 /* UIKit.framework in Frameworks */,
 				9272073B154E60FF00672615 /* Foundation.framework in Frameworks */,
 				9272073D154E60FF00672615 /* CoreGraphics.framework in Frameworks */,
@@ -111,6 +117,7 @@
 				92720738154E60FF00672615 /* UIKit.framework */,
 				9272073A154E60FF00672615 /* Foundation.framework */,
 				9272073C154E60FF00672615 /* CoreGraphics.framework */,
+				920B11D51553C8B3007E90FA /* CoreText.framework */,
 				92720756154E60FF00672615 /* SenTestingKit.framework */,
 			);
 			name = Frameworks;
@@ -125,6 +132,8 @@
 				9272074E154E60FF00672615 /* CRViewController.m */,
 				920B11C51551A280007E90FA /* CRCodeViewController.h */,
 				920B11C61551A280007E90FA /* CRCodeViewController.m */,
+				920B11D11553C879007E90FA /* CESyntaxHighlightedCodeView.h */,
+				920B11D31553C883007E90FA /* CESyntaxHighlightedCodeView.m */,
 				9272077F154F011500672615 /* CRTagFile.h */,
 				92720780154F011500672615 /* CRTagFile.m */,
 				9272074A154E60FF00672615 /* MainStoryboard.storyboard */,
@@ -278,6 +287,7 @@
 				9272074F154E60FF00672615 /* CRViewController.m in Sources */,
 				92720781154F011500672615 /* CRTagFile.m in Sources */,
 				920B11C71551A280007E90FA /* CRCodeViewController.m in Sources */,
+				920B11D41553C883007E90FA /* CESyntaxHighlightedCodeView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -8,9 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
+@class CRTagFile;
 @interface CRAppDelegate : UIResponder <UIApplicationDelegate>
+
 
 @property (strong, nonatomic) UIWindow *window;
 @property (strong, nonatomic) NSString *basePath;
-
+@property (strong, nonatomic) CRTagFile *tagFile;
 @end

@@ -7,6 +7,8 @@
 //
 
 #import "CRCodeViewController.h"
+#import "CRAppDelegate.h"
+#import "CRTagFile.h"
 
 @interface CRCodeViewController ()
 
@@ -14,6 +16,7 @@
 
 @implementation CRCodeViewController
 @synthesize codeTextView;
+@synthesize fileName;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -27,14 +30,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.codeTextView.delegate = self;
+
+    self.title = fileName;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths objectAtIndex:0];
     NSString *path = [documentPath stringByAppendingPathComponent:@"Samples"];
-    NSString *mainPath = [path stringByAppendingPathComponent:@"main.c"];
+    NSString *mainPath = [path stringByAppendingPathComponent:fileName];
 
     NSError *err = nil;
     NSString *contents = [NSString stringWithContentsOfFile:mainPath encoding:NSUTF8StringEncoding error:&err];
-    codeTextView.text = contents;
+    codeTextView.codeText = contents;
+
+    UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
+    tgr.numberOfTapsRequired = 1;
+    [codeTextView addGestureRecognizer:tgr];
 }
 
 - (void)viewDidUnload
@@ -47,6 +57,27 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+- (void)handleTap:(UIGestureRecognizer *)gestureRecognizer
+{
+    CGPoint location = [gestureRecognizer locationInView:codeTextView];
+    NSLog(@"tapped: %f, %f", location.x, location.y);
+    [codeTextView tappedAt:location];
+}
+
+- (void) wordTapped:(NSString *)word
+{
+    CRAppDelegate *appDelegate = (CRAppDelegate *)[UIApplication sharedApplication].delegate;
+    CRTagFile *tagFile = appDelegate.tagFile;
+
+    CRTag *tag = [tagFile searchFor:word];
+    if (tag) {
+        NSLog(@"jump to the definition of %@", word);
+        CRCodeViewController *cvc = [self.storyboard instantiateViewControllerWithIdentifier:@"CodeViewController"];
+        cvc.fileName = tag.filename;
+        [self.navigationController pushViewController:cvc animated:YES];
+    }
 }
 
 @end

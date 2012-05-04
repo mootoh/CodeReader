@@ -7,6 +7,7 @@
 //
 
 #import "CRViewController.h"
+#import "CRCodeViewController.h"
 
 @interface CRViewController ()
 
@@ -31,4 +32,9 @@
     return YES;
 }
 
+- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender
+{
+    CRCodeViewController *cvc = (CRCodeViewController *)segue.destinationViewController;
+    cvc.fileName = @"main.c";
+}
 @end
