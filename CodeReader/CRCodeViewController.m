@@ -80,4 +80,10 @@
     }
 }
 
+#pragma mark UIScrollViewDelegate
+
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [scrollView setNeedsDisplay];
+}
 @end

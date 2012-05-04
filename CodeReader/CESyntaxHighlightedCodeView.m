@@ -12,7 +12,7 @@
 @implementation CESyntaxHighlightedCodeView
 @synthesize codeText;
 @synthesize searchText;
-@synthesize delegate;
+@synthesize shcvDelegate;
 
 - (id)initWithFrame:(CGRect)frame
 {
@@ -22,7 +22,7 @@
       searchText = nil;
       attributedString = NULL;
       ctFrame = NULL;
-      delegate = nil;
+      shcvDelegate = nil;
    }
    return self;
 }
@@ -224,8 +224,8 @@
 
             NSString *word = [left stringByAppendingString:right];
             NSLog(@"word = %@", word);
-            if (delegate)
-                [delegate wordTapped:word];
+            if (shcvDelegate)
+                [shcvDelegate wordTapped:word];
             break;
         }
     }

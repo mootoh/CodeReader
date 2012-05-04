@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "CESyntaxHighlightedCodeView.h"
 
-@interface CRCodeViewController : UIViewController <CESyntaxHighlightedCodeViewDelegate>
+@interface CRCodeViewController : UIViewController <UIScrollViewDelegate, CESyntaxHighlightedCodeViewDelegate>
 
 @property (weak, nonatomic) IBOutlet CESyntaxHighlightedCodeView *codeTextView;
 @property (strong, nonatomic) NSString *fileName;

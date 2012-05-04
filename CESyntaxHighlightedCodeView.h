@@ -21,12 +21,12 @@
    NSString *searchText;
    CFMutableAttributedStringRef attributedString;
    CTFrameRef ctFrame;
-   id <CESyntaxHighlightedCodeViewDelegate> delegate;
+   id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
 }
 
 @property (nonatomic, copy) NSString *codeText;
 @property (nonatomic, copy) NSString *searchText;
-@property (nonatomic, strong) id <CESyntaxHighlightedCodeViewDelegate> delegate;
+@property (nonatomic, strong) id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
 
 - (void) tappedAt:(CGPoint)point;
 
