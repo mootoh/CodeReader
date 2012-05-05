@@ -210,7 +210,7 @@
             CFIndex index = CTLineGetStringIndexForPosition(line, position);
             if (index == kCFNotFound)
                 continue;
-//            NSLog(@"found! : index = %d", index);
+
             __block NSString *left = nil, *right = nil;
             [codeText enumerateSubstringsInRange:NSMakeRange(0, index) options:NSStringEnumerationReverse | NSStringEnumerationByWords usingBlock:^(NSString *subString, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
                   left = [subString copy];
@@ -230,6 +230,32 @@
         }
     }
     free(origins);
+}
+
+- (void) scrollToLine:(NSInteger) lineNumber
+{
+    CFArrayRef lines = CTFrameGetLines(ctFrame);
+    CTLineRef line = CFArrayGetValueAtIndex(lines, 0);
+
+    // Get typographics bounds
+    double width;
+    float ascent;
+    float descent;
+    float leading;
+    width = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
+
+    float viewHeight = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)
+        ? (self.frame.size.width > self.frame.size.height ? self.frame.size.height : self.frame.size.width)
+        : (self.frame.size.width > self.frame.size.height ? self.frame.size.width : self.frame.size.height);
+//    NSLog(@"orientation:%d, width:%f, height:%f, viewHeight:%f", [UIDevice currentDevice].orientation, self.frame.size.width, self.frame.size.height, viewHeight);
+    float height = self.contentSize.height/CFArrayGetCount(lines);
+    float scrollTo = lineNumber * height;// + height * 12;
+    if (scrollTo + viewHeight/2 < self.contentSize.height)
+        scrollTo += viewHeight/2;
+//    NSLog(@"lineNumber=%d, scrollTo=%f, height=%f", lineNumber, scrollTo, self.contentSize.height);
+
+    CGRect rect = CGRectMake(self.frame.origin.x, self.frame.origin.y + scrollTo, width, height);
+    [self scrollRectToVisible:rect animated:YES];
 }
 
 @end

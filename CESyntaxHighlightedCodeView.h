@@ -29,5 +29,6 @@
 @property (nonatomic, strong) id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
 
 - (void) tappedAt:(CGPoint)point;
+- (void) scrollToLine:(NSInteger) lineNumber;
 
 @end

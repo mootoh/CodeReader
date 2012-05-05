@@ -36,5 +36,6 @@
 {
     CRCodeViewController *cvc = (CRCodeViewController *)segue.destinationViewController;
     cvc.fileName = @"main.c";
+    cvc.lineNumber = 0;
 }
 @end

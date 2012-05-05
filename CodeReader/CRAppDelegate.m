@@ -78,6 +78,7 @@
     }
     self.basePath = path;
 
+//    NSString *tagPath = [path stringByAppendingPathComponent:@"ruby/tags"];
     NSString *tagPath = [path stringByAppendingPathComponent:@"tags"];
     self.tagFile = [[CRTagFile alloc] initWithPath:tagPath];
 }

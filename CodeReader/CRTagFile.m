@@ -42,7 +42,7 @@
         NSRange range = {1, [compos count]-1};
         NSArray *vals = [compos subarrayWithRange:range];
         CRTag *tag = [[CRTag alloc] initWithValues:vals];
-        NSLog(@"filename: %@", tag.filename);
+//        NSLog(@"filename: %@", tag.filename);
         [tags addObject:tag];
     }
 }

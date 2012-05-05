@@ -13,5 +13,6 @@
 
 @property (weak, nonatomic) IBOutlet CESyntaxHighlightedCodeView *codeTextView;
 @property (strong, nonatomic) NSString *fileName;
+@property (nonatomic) NSInteger lineNumber;
 
 @end

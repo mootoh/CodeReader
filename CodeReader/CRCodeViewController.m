@@ -17,6 +17,7 @@
 @implementation CRCodeViewController
 @synthesize codeTextView;
 @synthesize fileName;
+@synthesize lineNumber;
 
 - (id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil
 {
@@ -31,10 +32,12 @@
 {
     [super viewDidLoad];
     self.codeTextView.delegate = self;
+    self.codeTextView.shcvDelegate = self;
 
     self.title = fileName;
     NSArray *paths = NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES);
     NSString *documentPath = [paths objectAtIndex:0];
+//    NSString *path = [documentPath stringByAppendingPathComponent:@"Samples/ruby"];
     NSString *path = [documentPath stringByAppendingPathComponent:@"Samples"];
     NSString *mainPath = [path stringByAppendingPathComponent:fileName];
 
@@ -45,6 +48,7 @@
     UITapGestureRecognizer *tgr = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(handleTap:)];
     tgr.numberOfTapsRequired = 1;
     [codeTextView addGestureRecognizer:tgr];
+    [codeTextView scrollToLine:lineNumber];
 }
 
 - (void)viewDidUnload
@@ -57,6 +61,11 @@
 - (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)interfaceOrientation
 {
 	return YES;
+}
+
+- (void) willRotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation duration:(NSTimeInterval)duration
+{
+    [self.codeTextView setNeedsDisplay];
 }
 
 - (void)handleTap:(UIGestureRecognizer *)gestureRecognizer
@@ -76,6 +85,7 @@
         NSLog(@"jump to the definition of %@", word);
         CRCodeViewController *cvc = [self.storyboard instantiateViewControllerWithIdentifier:@"CodeViewController"];
         cvc.fileName = tag.filename;
+        cvc.lineNumber = [tag.lineno intValue];
         [self.navigationController pushViewController:cvc animated:YES];
     }
 }
