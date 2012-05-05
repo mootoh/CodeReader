@@ -8,6 +8,8 @@
 
 #import <CoreText/CoreText.h>
 #import "CESyntaxHighlightedCodeView.h"
+#import "CRAppDelegate.h"
+#import "CRTagFile.h"
 
 @implementation CESyntaxHighlightedCodeView
 @synthesize codeText;
@@ -98,6 +100,27 @@
    CGColorSpaceRelease(rgbColorSpace);
 }
 
+- (void) highlightTaggedWords:(CFAttributedStringRef) string
+{
+    CGColorSpaceRef rgbColorSpace = CGColorSpaceCreateDeviceRGB();
+    CGFloat taggedComponents[] = { 0.0, 0.5, 0.25, 0.8 };
+    CGColorRef taggedColor = CGColorCreate(rgbColorSpace, taggedComponents);
+
+    CRAppDelegate *appDelegate = (CRAppDelegate *)[UIApplication sharedApplication].delegate;
+    CRTagFile *tagFile = appDelegate.tagFile;
+    NSRange range = NSMakeRange(0, [codeText length]);
+
+    // TODO: should search for only the visible range
+    [codeText enumerateSubstringsInRange:range options:NSStringEnumerationByWords usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
+        if ([tagFile searchFor:substring]) {
+            CFRange wordRange = CFRangeMake(substringRange.location, substringRange.length);
+            CFAttributedStringSetAttribute(string, wordRange, kCTForegroundColorAttributeName, taggedColor);
+        }
+    }];
+
+    CGColorSpaceRelease(rgbColorSpace);
+}
+
 - (void)drawRect:(CGRect)rect
 {
    if (! codeText) return;
@@ -138,6 +161,7 @@
 
    [self syntaxHighlight:attributedString];
    [self highlightSearchResult:attributedString];
+    [self highlightTaggedWords:attributedString];
 
    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Times"), 20.0, NULL);
 	CFAttributedStringSetAttribute(attributedString, CFRangeMake(0, codeText.length), kCTFontAttributeName, codeFont);
