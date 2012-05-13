@@ -16,24 +16,51 @@
 @synthesize searchText;
 @synthesize shcvDelegate;
 
+- (void) initialize
+{
+    codeText = nil;
+    searchText = nil;
+    attributedCodeText = NULL;
+    framesetter = NULL;
+    wholeFrame = NULL;
+    textRanges = NULL;
+    prevViewframeRect = CGRectZero;
+    textRangesCount = 0;
+    shcvDelegate = nil;
+}
+
 - (id)initWithFrame:(CGRect)frame
 {
     self = [super initWithFrame:frame];
     if (self) {
-        codeText = nil;
-        searchText = nil;
-        attributedCodeText = NULL;
-        shcvDelegate = nil;
+        [self initialize];
     }
     return self;
 }
 
+- (id) initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self initialize];
+    }
+    return self;
+}
+
+- (void)dealloc
+{
+    if (wholeFrame) CFRelease(wholeFrame);
+    if (textRanges) free(textRanges);
+    if (framesetter) CFRelease(framesetter);
+    if (attributedCodeText) CFRelease(attributedCodeText);
+}
+
 - (void) setCodeText:(NSString *) ct
 {
-    NSLog(@"frame: %f,%f,%f,%f", self.frame.origin.x, self.frame.origin.y, self.frame.size.width, self.frame.size.height);
-
     codeText = [ct copy];
     [self setupTypeset];
+    [self updateScrollViewContentSize];
+    [self setNeedsLayout];
     [self setNeedsDisplay];
 }
 
@@ -44,7 +71,7 @@
 {
     attributedCodeText = CFAttributedStringCreateMutable(NULL, codeText.length);
     CFAttributedStringReplaceString(attributedCodeText, CFRangeMake(0, 0), (__bridge CFStringRef)codeText);
-    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Helvetica"), 18.0, NULL);
+    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Helvetica"), 16.0, NULL);
     CFAttributedStringSetAttribute(attributedCodeText, CFRangeMake(0, codeText.length), kCTFontAttributeName, codeFont);
 
 //    TODO: enable it later
@@ -54,27 +81,75 @@
 
     // Create the framesetter with the attributed string.
     framesetter = CTFramesetterCreateWithAttributedString(attributedCodeText);
+}
+
+void printRect(CGRect *rect, NSString *prefix)
+{
+    NSLog(@"%@: rect:(%f, %f, %f, %f)", prefix, rect->origin.x, rect->origin.y, rect->size.width, rect->size.height);
+}
+
+- (void) updateScrollViewContentSize
+{
     // Calculate the content size of this scroll view based on the CT frame.
     CFRange range;
     CGSize scrollViewSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, codeText.length), NULL, CGSizeMake(self.frame.size.width, CGFLOAT_MAX), &range);
     [self setContentSize:scrollViewSize];
-#if 0
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGRect rect = CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height);
-    CGPathAddRect(path, NULL, rect);
-    CFRange stringRange = CFRangeMake(0, codeText.length);
-    CTFrameRef wholeFrame = CTFramesetterCreateFrame(framesetter, stringRange, path, NULL);
-    CFArrayRef lines = CTFrameGetLines(wholeFrame);
-    lineCount = CFArrayGetCount(lines);
-    for (int i=0; i<lineCount; i++) {
-        CTLineRef line = CFArrayGetValueAtIndex(lines, i);
-        int glyhs = CTLineGetGlyphCount(line);
-//        NSLog(@"%d: glyph count: %d", i, glyhs);
-        CFRange lineRange = CTLineGetStringRange(line);
-//        NSLog(@"%d: lineRange: %d, %d", i, lineRange.location, lineRange.length);
-    }
+
+    if (wholeFrame)
+        CFRelease(wholeFrame);
+    CGPathRef path = CGPathCreateWithRect(CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height), NULL);
+    wholeFrame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
     CFRelease(path);
-#endif // 0
+}
+
+- (void) layoutSubviews
+{
+    if (! CGRectEqualToRect(self.frame, prevViewframeRect)) {
+        [self updateScrollViewContentSize];
+        [self collectTextRanges];
+        prevViewframeRect = self.frame;
+    }
+}
+
+- (void) collectTextRanges
+{
+    size_t TEXT_RANGE_MAX = 500;
+    if (textRanges)
+        free(textRanges);
+    textRanges = (CFRange *)malloc(sizeof(CFRange) * TEXT_RANGE_MAX);
+
+    CFRange fullRange = CFRangeMake(0, codeText.length);
+    textRangesCount=0;
+    for (CFRange textRange = CFRangeMake(0, codeText.length);
+         textRange.location < fullRange.length;
+         ) {
+        CGMutablePathRef path = CGPathCreateMutable();
+        CGPathAddRect(path, NULL, self.frame);
+
+        CTFrameRef frame = CTFramesetterCreateFrame(framesetter, textRange, path, NULL);
+        if (frame == NULL) {
+            NSLog(@"frame is null..... for range:(%ld, %ld)", textRange.location, textRange.length);
+            CFRelease(path);
+            break;
+        }
+
+        textRange = CTFrameGetVisibleStringRange(frame);
+        textRanges[textRangesCount++] = textRange;
+        if (textRangesCount >= TEXT_RANGE_MAX) {
+            TEXT_RANGE_MAX *= 2;
+            realloc(textRanges, TEXT_RANGE_MAX);
+            if (textRanges == NULL) {
+                NSLog(@"failed in reallocating text ranges array");
+                abort();
+            }
+        }
+        
+        CFRelease(frame);
+        CFRelease(path);
+
+        textRange.location += textRange.length;
+        textRange.length = fullRange.length - textRange.location;
+    }
 }
 
 - (void) coloring:(CFMutableAttributedStringRef) string range:(CFRange) range color:(CGColorRef)color
@@ -171,9 +246,20 @@
     CGColorSpaceRelease(rgbColorSpace);
 }
 
+- (void)drawFrameOf:(int)index InRect:(CGRect)rect context:(CGContextRef)context
+{
+    CGRect textRect = CGRectMake(rect.origin.x, rect.origin.y - index * rect.size.height + self.frame.origin.y, rect.size.width, rect.size.height);
+    CGPathRef path = CGPathCreateWithRect(textRect, NULL);
+    
+    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, textRanges[index], path, NULL);
+    CTFrameDraw(frame, context);
+    
+    CFRelease(frame);
+    CFRelease(path);
+}
+
 - (void)drawRect:(CGRect)rect
 {
-//    NSLog(@"rect:%f,%f,%f,%f", rect.origin.x, rect.origin.y, rect.size.width, rect.size.height);
     if (! codeText) return;
 
     CGContextRef context = UIGraphicsGetCurrentContext();
@@ -181,138 +267,27 @@
     CGContextTranslateCTM(context, 0.0, self.frame.size.height + self.frame.origin.y + self.bounds.origin.y);
     CGContextScaleCTM(context, 1.0, -1.0);
 
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, self.frame);
-
-    // TODO: should use actual glyph count for each line
-    int offset = (rect.origin.y / self.contentSize.height) * 100.0 * 24 * 80;
-    if (offset < 0) offset = 0;
-
-    CFRange stringRange = CFRangeMake(offset, codeText.length-offset);
-    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, stringRange, path, NULL);
-
-    CTFrameDraw(frame, context);
-
-    CFRelease(path);
-    CFRelease(frame);
-
-#if 0
-    CFRange fullRange = CFRangeMake(0, codeText.length);
-    CGRect frameRect = rect; //CGRectMake(0, 0, 600, 1000);
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-    CGContextTranslateCTM(context, 0.0, self.contentSize.height);
-    CGContextScaleCTM(context, 1.0, -1.0);
-    
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFMutableAttributedStringRef)attributedString);
-    /*
-     for (CFRange frameRange = CFRangeMake(0, 0);
-     frameRange.location < fullRange.length;
-     frameRange.location += frameRange.length) {
-     CGMutablePathRef path = CGPathCreateMutable();
-     CGPathAddRect(path, NULL, frameRect);
-     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, frameRange, path, NULL);
-     if (frame == NULL) {
-     CFRelease(path);
-     break;
-     }
-     CTFrameDraw(frame, context);
-     frameRange = CTFrameGetVisibleStringRange(frame);
-     frameRect.origin.y += frameRect.size.height;
-     
-     CFRelease(path);
-     CFRelease(frame);
-     }
-     CFRelease(framesetter);
-     */
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGPathAddRect(path, NULL, frameRect);
-    CFRange frameRange = CFRangeMake(0, 1600 > codeText.length ? codeText.length : 1600);
-    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, frameRange, path, NULL);
-
-    CTFrameDraw(frame, context);
-
-    CFRelease(path);
-    CFRelease(frame);
-
-    //   CTFrameDraw(ctFrame, context);
-
-    CGContextTranslateCTM(context, 0.0, self.contentOffset.y);
-    /*
-     CFArrayRef lines = CTFrameGetLines(ctFrame);
-     CFIndex lineSize = CFArrayGetCount(lines);
-     for (int i=0; i<lineSize; i++) {
-     CTLineRef line = (CTLineRef)CFArrayGetValueAtIndex(lines, i);
-     CGRect bounds = CTLineGetImageBounds(line, context);
-     NSLog(@"bounds: (%f, %f), (%f, %f)",
-     bounds.origin.x, bounds.origin.y,
-     bounds.size.width, bounds.size.height);
-     }
-     */ 
-#endif // 0
-}
-
-- (void)dealloc
-{
-    if (wholeFrame) CFRelease(wholeFrame);
-    if (framesetter) CFRelease(framesetter);
-    if (attributedCodeText) CFRelease(attributedCodeText);
-}
-
-- (void) updateFrame
-{
-#if 0
-    CFStringRef string = (__bridge CFStringRef)codeText;
-    if (attributedString) CFRelease(attributedString);
-    attributedString = CFAttributedStringCreateMutable(kCFAllocatorDefault, 0);
-    CFAttributedStringReplaceString(attributedString, CFRangeMake(0, 0), string);
-    
-    [self syntaxHighlight:attributedString];
-    [self highlightSearchResult:attributedString];
-    [self highlightTaggedWords:attributedString];
-    
-    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Times"), 20.0, NULL);
-	CFAttributedStringSetAttribute(attributedString, CFRangeMake(0, codeText.length), kCTFontAttributeName, codeFont);
-    
-    // Create the framesetter with the attributed string.
-    CTFramesetterRef framesetter = CTFramesetterCreateWithAttributedString((CFMutableAttributedStringRef)attributedString);
-    
-    // calculate the scrollView size
-    CFRange range;
-    CGSize scrollViewSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, codeText.length), NULL, CGSizeMake(CGFLOAT_MAX, CGFLOAT_MAX), &range);
-    
-    // Initialize a rectangular path.
-    CGMutablePathRef path = CGPathCreateMutable();
-    CGRect bounds = CGRectMake(0.0, 0.0, scrollViewSize.width, scrollViewSize.height);
-    CGPathAddRect(path, NULL, bounds);
-    
-    // Create the frame and draw it into the graphics context
-    if (ctFrame) CFRelease(ctFrame);
-    ctFrame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-    CFRelease(framesetter);
-    
-    [self setContentSize:scrollViewSize];
-    [self setNeedsDisplay];
-#endif // 0
+    CGFloat y = rect.origin.y / (CGFloat)rect.size.height;
+    int index = (int)y;
+    [self drawFrameOf:index InRect:rect context:context];
+    [self drawFrameOf:index+1 InRect:rect context:context];
 }
 
 - (void) setSearchText:(NSString *) st
 {
     searchText = (st == nil) ? nil : [st copy];
-    [self updateFrame];
+    [self setNeedsDisplay];
 }
 
 // tapped character lookup code is from  http://hmdt.jp/blog/?p=105 .
 - (void) tappedAt:(CGPoint)point
 {
-#if 0
     point.y = self.contentSize.height - point.y;
     
-    CFArrayRef lines = CTFrameGetLines(ctFrame);
+    CFArrayRef lines = CTFrameGetLines(wholeFrame);
     CFIndex lineSize = CFArrayGetCount(lines);
     CGPoint *origins = (CGPoint *)malloc(sizeof(CGPoint) * lineSize);
-    CTFrameGetLineOrigins(ctFrame, CFRangeMake(0, lineSize), origins);
+    CTFrameGetLineOrigins(wholeFrame, CFRangeMake(0, lineSize), origins);
     
     for (int i=0; i < lineSize; i++) {
         CTLineRef line = (CTLineRef)CFArrayGetValueAtIndex(lines, i);
@@ -359,13 +334,11 @@
         }
     }
     free(origins);
-#endif // 0
 }
 
 - (void) scrollToLine:(NSInteger) lineNumber
 {
-#if 0
-    CFArrayRef lines = CTFrameGetLines(ctFrame);
+    CFArrayRef lines = CTFrameGetLines(wholeFrame);
     CTLineRef line = CFArrayGetValueAtIndex(lines, 0);
     
     // Get typographics bounds
@@ -387,7 +360,6 @@
     
     CGRect rect = CGRectMake(self.frame.origin.x, self.frame.origin.y + scrollTo, width, height);
     [self scrollRectToVisible:rect animated:YES];
-#endif // 0
 }
 
 @end

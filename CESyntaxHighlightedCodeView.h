@@ -22,7 +22,9 @@
     CFMutableAttributedStringRef attributedCodeText;
     CTFramesetterRef framesetter;
     CTFrameRef wholeFrame;
-    NSInteger lineCount;
+    CFRange *textRanges;
+    CGRect prevViewframeRect;
+    size_t textRangesCount;
     id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
 }
 
