@@ -68,7 +68,10 @@
    CGFloat greenComponents[] = { 0.0, 0.5, 0.25, 0.8 };
    CGColorRef green = CGColorCreate(rgbColorSpace, greenComponents);
    [self syntaxHighlight:string pattern:@"\".*\"" color:green];
-   
+
+   CGColorRelease(red);
+   CGColorRelease(blue);
+   CGColorRelease(green);
    CGColorSpaceRelease(rgbColorSpace);
 }
 
@@ -96,7 +99,8 @@
       CFAttributedStringSetAttribute(string, range, kCTUnderlineStyleAttributeName, underline);
       CFRelease(underline);
    }];
-   
+
+   CGColorRelease(searchResultColor);
    CGColorSpaceRelease(rgbColorSpace);
 }
 
@@ -118,6 +122,7 @@
         }
     }];
 
+    CGColorRelease(taggedColor);
     CGColorSpaceRelease(rgbColorSpace);
 }
 
