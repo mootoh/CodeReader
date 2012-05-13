@@ -19,7 +19,6 @@
         tags = [[NSMutableArray alloc] init];
         NSError *err = nil;
         NSString *contents = [NSString stringWithContentsOfFile:path encoding:NSUTF8StringEncoding error:&err];
-        NSLog(@"contents = %@", contents);
         self.raw = contents;
         [self parse:contents];
     }
@@ -42,7 +41,6 @@
         NSRange range = {1, [compos count]-1};
         NSArray *vals = [compos subarrayWithRange:range];
         CRTag *tag = [[CRTag alloc] initWithValues:vals];
-//        NSLog(@"filename: %@", tag.filename);
         [tags addObject:tag];
     }
 }
