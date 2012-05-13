@@ -17,11 +17,13 @@
 
 @interface CESyntaxHighlightedCodeView : UIScrollView
 {
-   NSString *codeText;
-   NSString *searchText;
-   CFMutableAttributedStringRef attributedString;
-   CTFrameRef ctFrame;
-   id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
+    NSString *codeText;
+    NSString *searchText;
+    CFMutableAttributedStringRef attributedCodeText;
+    CTFramesetterRef framesetter;
+    CTFrameRef wholeFrame;
+    NSInteger lineCount;
+    id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
 }
 
 @property (nonatomic, copy) NSString *codeText;
