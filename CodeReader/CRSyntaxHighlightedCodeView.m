@@ -270,7 +270,8 @@ void printRect(CGRect *rect, NSString *prefix)
     CGFloat y = rect.origin.y / (CGFloat)rect.size.height;
     int index = (int)y;
     [self drawFrameOf:index InRect:rect context:context];
-    [self drawFrameOf:index+1 InRect:rect context:context];
+    if (textRangesCount > 1)
+        [self drawFrameOf:index+1 InRect:rect context:context];
 }
 
 - (void) setSearchText:(NSString *) st
