@@ -9,13 +9,13 @@
 #import <UIKit/UIKit.h>
 #import <CoreText/CoreText.h>
 
-@protocol CESyntaxHighlightedCodeViewDelegate
+@protocol CRSyntaxHighlightedCodeViewDelegate
 
 - (void) wordTapped:(NSString *)word;
 
 @end
 
-@interface CESyntaxHighlightedCodeView : UIScrollView
+@interface CRSyntaxHighlightedCodeView : UIScrollView
 {
     NSString *codeText;
     NSString *searchText;
@@ -25,12 +25,12 @@
     CFRange *textRanges;
     CGRect prevViewframeRect;
     size_t textRangesCount;
-    id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
+    id <CRSyntaxHighlightedCodeViewDelegate> shcvDelegate;
 }
 
 @property (nonatomic, copy) NSString *codeText;
 @property (nonatomic, copy) NSString *searchText;
-@property (nonatomic, strong) id <CESyntaxHighlightedCodeViewDelegate> shcvDelegate;
+@property (nonatomic, strong) id <CRSyntaxHighlightedCodeViewDelegate> shcvDelegate;
 
 - (void) tappedAt:(CGPoint)point;
 - (void) scrollToLine:(NSInteger) lineNumber;

@@ -7,11 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "CESyntaxHighlightedCodeView.h"
+#import "CRSyntaxHighlightedCodeView.h"
 
-@interface CRCodeViewController : UIViewController <UIScrollViewDelegate, CESyntaxHighlightedCodeViewDelegate>
+@interface CRCodeViewController : UIViewController <UIScrollViewDelegate, CRSyntaxHighlightedCodeViewDelegate>
 
-@property (weak, nonatomic) IBOutlet CESyntaxHighlightedCodeView *codeTextView;
+@property (weak, nonatomic) IBOutlet CRSyntaxHighlightedCodeView *codeTextView;
 @property (strong, nonatomic) NSString *fileName;
 @property (nonatomic) NSInteger lineNumber;
 

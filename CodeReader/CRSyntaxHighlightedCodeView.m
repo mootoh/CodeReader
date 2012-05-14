@@ -7,11 +7,11 @@
 //
 
 #import <CoreText/CoreText.h>
-#import "CESyntaxHighlightedCodeView.h"
+#import "CRSyntaxHighlightedCodeView.h"
 #import "CRAppDelegate.h"
 #import "CRTagFile.h"
 
-@implementation CESyntaxHighlightedCodeView
+@implementation CRSyntaxHighlightedCodeView
 @synthesize codeText;
 @synthesize searchText;
 @synthesize shcvDelegate;
