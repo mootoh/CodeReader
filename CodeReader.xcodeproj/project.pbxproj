@@ -40,7 +40,7 @@
 /* Begin PBXFileReference section */
 		920B11C51551A280007E90FA /* CRCodeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; lineEnding = 0; path = CRCodeViewController.h; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objcpp; };
 		920B11C61551A280007E90FA /* CRCodeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; lineEnding = 0; path = CRCodeViewController.m; sourceTree = "<group>"; xcLanguageSpecificationIdentifier = xcode.lang.objc; };
-		920B11D11553C879007E90FA /* CRSyntaxHighlightedCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CRSyntaxHighlightedCodeView.h; path = ../CRSyntaxHighlightedCodeView.h; sourceTree = "<group>"; };
+		920B11D11553C879007E90FA /* CRSyntaxHighlightedCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRSyntaxHighlightedCodeView.h; sourceTree = "<group>"; };
 		920B11D31553C883007E90FA /* CRSyntaxHighlightedCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRSyntaxHighlightedCodeView.m; sourceTree = "<group>"; };
 		920B11D51553C8B3007E90FA /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
 		92720734154E60FF00672615 /* CodeReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
