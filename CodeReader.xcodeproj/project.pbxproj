@@ -10,6 +10,7 @@
 		920B11C71551A280007E90FA /* CRCodeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 920B11C61551A280007E90FA /* CRCodeViewController.m */; };
 		920B11D41553C883007E90FA /* CRSyntaxHighlightedCodeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 920B11D31553C883007E90FA /* CRSyntaxHighlightedCodeView.m */; };
 		920B11D61553C8B3007E90FA /* CoreText.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 920B11D51553C8B3007E90FA /* CoreText.framework */; };
+		92188DA81560D17E00BA9914 /* Inconsolata.otf in Resources */ = {isa = PBXBuildFile; fileRef = 92188DA71560D17E00BA9914 /* Inconsolata.otf */; };
 		92720739154E60FF00672615 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 92720738154E60FF00672615 /* UIKit.framework */; };
 		9272073B154E60FF00672615 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073A154E60FF00672615 /* Foundation.framework */; };
 		9272073D154E60FF00672615 /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9272073C154E60FF00672615 /* CoreGraphics.framework */; };
@@ -43,6 +44,7 @@
 		920B11D11553C879007E90FA /* CRSyntaxHighlightedCodeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CRSyntaxHighlightedCodeView.h; sourceTree = "<group>"; };
 		920B11D31553C883007E90FA /* CRSyntaxHighlightedCodeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CRSyntaxHighlightedCodeView.m; sourceTree = "<group>"; };
 		920B11D51553C8B3007E90FA /* CoreText.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreText.framework; path = System/Library/Frameworks/CoreText.framework; sourceTree = SDKROOT; };
+		92188DA71560D17E00BA9914 /* Inconsolata.otf */ = {isa = PBXFileReference; lastKnownFileType = file; path = Inconsolata.otf; sourceTree = "<group>"; };
 		92720734154E60FF00672615 /* CodeReader.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CodeReader.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		92720738154E60FF00672615 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		9272073A154E60FF00672615 /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -145,6 +147,7 @@
 		9272073F154E60FF00672615 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				92188DA71560D17E00BA9914 /* Inconsolata.otf */,
 				9272077D154EFE5100672615 /* Samples */,
 				92720740154E60FF00672615 /* CodeReader-Info.plist */,
 				92720741154E60FF00672615 /* InfoPlist.strings */,
@@ -248,6 +251,7 @@
 				92720743154E60FF00672615 /* InfoPlist.strings in Resources */,
 				9272074C154E60FF00672615 /* MainStoryboard.storyboard in Resources */,
 				9272077E154EFE5100672615 /* Samples in Resources */,
+				92188DA81560D17E00BA9914 /* Inconsolata.otf in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

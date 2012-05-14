@@ -71,7 +71,7 @@
 {
     attributedCodeText = CFAttributedStringCreateMutable(NULL, codeText.length);
     CFAttributedStringReplaceString(attributedCodeText, CFRangeMake(0, 0), (__bridge CFStringRef)codeText);
-    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Helvetica"), 16.0, NULL);
+    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Inconsolata"), 16.0, NULL);
     CFAttributedStringSetAttribute(attributedCodeText, CFRangeMake(0, codeText.length), kCTFontAttributeName, codeFont);
 
 //    TODO: enable it later
