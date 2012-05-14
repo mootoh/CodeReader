@@ -238,7 +238,9 @@ void printRect(CGRect *rect, NSString *prefix)
     [codeText enumerateSubstringsInRange:range options:NSStringEnumerationByWords usingBlock:^(NSString *substring, NSRange substringRange, NSRange enclosingRange, BOOL *stop) {
         if ([tagFile searchFor:substring]) {
             CFRange wordRange = CFRangeMake(substringRange.location, substringRange.length);
-            CFAttributedStringSetAttribute(string, wordRange, kCTForegroundColorAttributeName, taggedColor);
+            CFAttributedStringSetAttribute(string, wordRange, kCTUnderlineColorAttributeName, taggedColor);
+            NSNumber *styleNum = [NSNumber numberWithInt:kCTUnderlinePatternDot | kCTUnderlineStyleThick];
+            CFAttributedStringSetAttribute(string, wordRange, kCTUnderlineStyleAttributeName, (__bridge CFNumberRef)styleNum);
         }
     }];
     
