@@ -22,10 +22,12 @@
     searchText = nil;
     attributedCodeText = NULL;
     framesetter = NULL;
-    wholeFrame = NULL;
+    currentFrame = NULL;
+    nextFrame = NULL;
     textRanges = NULL;
     prevViewframeRect = CGRectZero;
     textRangesCount = 0;
+    lineCount = 0;
     shcvDelegate = nil;
 }
 
@@ -49,7 +51,6 @@
 
 - (void)dealloc
 {
-    if (wholeFrame) CFRelease(wholeFrame);
     if (textRanges) free(textRanges);
     if (framesetter) CFRelease(framesetter);
     if (attributedCodeText) CFRelease(attributedCodeText);
@@ -60,6 +61,7 @@
     codeText = [ct copy];
     [self setupTypeset];
     [self updateScrollViewContentSize];
+    [self collectTextRanges];
     [self setNeedsLayout];
     [self setNeedsDisplay];
 }
@@ -94,12 +96,6 @@ void printRect(CGRect *rect, NSString *prefix)
     CFRange range;
     CGSize scrollViewSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, codeText.length), NULL, CGSizeMake(self.frame.size.width, CGFLOAT_MAX), &range);
     [self setContentSize:scrollViewSize];
-
-    if (wholeFrame)
-        CFRelease(wholeFrame);
-    CGPathRef path = CGPathCreateWithRect(CGRectMake(0, 0, scrollViewSize.width, scrollViewSize.height), NULL);
-    wholeFrame = CTFramesetterCreateFrame(framesetter, CFRangeMake(0, 0), path, NULL);
-    CFRelease(path);
 }
 
 - (void) layoutSubviews
@@ -132,6 +128,8 @@ void printRect(CGRect *rect, NSString *prefix)
             CFRelease(path);
             break;
         }
+        CFArrayRef lines = CTFrameGetLines(frame);
+        lineCount += CFArrayGetCount(lines);
 
         textRange = CTFrameGetVisibleStringRange(frame);
         textRanges[textRangesCount++] = textRange;
@@ -248,7 +246,7 @@ void printRect(CGRect *rect, NSString *prefix)
     CGColorSpaceRelease(rgbColorSpace);
 }
 
-- (void)drawFrameOf:(int)index InRect:(CGRect)rect context:(CGContextRef)context
+- (CTFrameRef)drawFrameOf:(int)index InRect:(CGRect)rect context:(CGContextRef)context
 {
     CGRect textRect = CGRectMake(rect.origin.x, rect.origin.y - index * rect.size.height + self.frame.origin.y, rect.size.width, rect.size.height);
     CGPathRef path = CGPathCreateWithRect(textRect, NULL);
@@ -256,8 +254,8 @@ void printRect(CGRect *rect, NSString *prefix)
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, textRanges[index], path, NULL);
     CTFrameDraw(frame, context);
     
-    CFRelease(frame);
     CFRelease(path);
+    return frame;
 }
 
 - (void)drawRect:(CGRect)rect
@@ -271,9 +269,14 @@ void printRect(CGRect *rect, NSString *prefix)
 
     CGFloat y = rect.origin.y / (CGFloat)rect.size.height;
     int index = (int)y;
-    [self drawFrameOf:index InRect:rect context:context];
+
+    if (currentFrame)
+        CFRelease(currentFrame);
+    if (nextFrame)
+        CFRelease(nextFrame);
+    currentFrame = [self drawFrameOf:index InRect:rect context:context];
     if (textRangesCount > 1)
-        [self drawFrameOf:index+1 InRect:rect context:context];
+        nextFrame = [self drawFrameOf:index+1 InRect:rect context:context];
 }
 
 - (void) setSearchText:(NSString *) st
@@ -282,18 +285,20 @@ void printRect(CGRect *rect, NSString *prefix)
     [self setNeedsDisplay];
 }
 
-// tapped character lookup code is from  http://hmdt.jp/blog/?p=105 .
-- (void) tappedAt:(CGPoint)point
+- (BOOL) findTappedPoint:(CGPoint)point InFrame:(CTFrameRef)frame
 {
-    point.y = self.contentSize.height - point.y;
-    
-    CFArrayRef lines = CTFrameGetLines(wholeFrame);
+    BOOL ret = FALSE;
+    CFArrayRef lines = CTFrameGetLines(frame);
     CFIndex lineSize = CFArrayGetCount(lines);
     CGPoint *origins = (CGPoint *)malloc(sizeof(CGPoint) * lineSize);
-    CTFrameGetLineOrigins(wholeFrame, CFRangeMake(0, lineSize), origins);
+    CTFrameGetLineOrigins(frame, CFRangeMake(0, lineSize), origins);
+    CGPathRef path = CTFrameGetPath(frame);
+    CGRect pathBounds = CGPathGetBoundingBox(path);
     
     for (int i=0; i < lineSize; i++) {
         CTLineRef line = (CTLineRef)CFArrayGetValueAtIndex(lines, i);
+        CFRange lineRange = CTLineGetStringRange(line);
+        NSRange nsLineRange = {lineRange.location, lineRange.length};
         CGPoint origin = *(origins+i);
         
         // Get typographics bounds
@@ -305,12 +310,11 @@ void printRect(CGRect *rect, NSString *prefix)
         // Decide line frame
         CGRect lineFrame;
         lineFrame.origin.x = origin.x;
-        lineFrame.origin.y = origin.y - descent;
+        lineFrame.origin.y = self.contentOffset.y - pathBounds.origin.y + pathBounds.size.height - origin.y; // - descent
         lineFrame.size.width = width;
         lineFrame.size.height = ascent + descent;
         
-        //        NSLog(@"lineFrame:%f, %f, %f, %f", lineFrame.origin.x, lineFrame.origin.y, lineFrame.size.width, lineFrame.size.height);
-        
+
         // Check with point
         if (CGRectContainsPoint(lineFrame, point)) {
             CGPoint position = {point.x + origins[0].x, point.y + origins[0].y};
@@ -333,35 +337,33 @@ void printRect(CGRect *rect, NSString *prefix)
             NSLog(@"word = %@", word);
             if (shcvDelegate)
                 [shcvDelegate wordTapped:word];
+            ret = YES;
             break;
         }
     }
     free(origins);
+    return ret;
+}
+
+// tapped character lookup code is from  http://hmdt.jp/blog/?p=105 .
+- (void) tappedAt:(CGPoint)point
+{
+    if ([self findTappedPoint:point InFrame:currentFrame])
+        return;
+    [self findTappedPoint:point InFrame:nextFrame];
 }
 
 - (void) scrollToLine:(NSInteger) lineNumber
 {
-    CFArrayRef lines = CTFrameGetLines(wholeFrame);
-    CTLineRef line = CFArrayGetValueAtIndex(lines, 0);
-    
-    // Get typographics bounds
-    double width;
-    float ascent;
-    float descent;
-    float leading;
-    width = CTLineGetTypographicBounds(line, &ascent, &descent, &leading);
-    
     float viewHeight = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)
     ? (self.frame.size.width > self.frame.size.height ? self.frame.size.height : self.frame.size.width)
     : (self.frame.size.width > self.frame.size.height ? self.frame.size.width : self.frame.size.height);
-    //    NSLog(@"orientation:%d, width:%f, height:%f, viewHeight:%f", [UIDevice currentDevice].orientation, self.frame.size.width, self.frame.size.height, viewHeight);
-    float height = self.contentSize.height/CFArrayGetCount(lines);
+    float height = self.contentSize.height/lineCount;
     float scrollTo = lineNumber * height;// + height * 12;
     if (scrollTo + viewHeight/2 < self.contentSize.height)
         scrollTo += viewHeight/2;
-    //    NSLog(@"lineNumber=%d, scrollTo=%f, height=%f", lineNumber, scrollTo, self.contentSize.height);
     
-    CGRect rect = CGRectMake(self.frame.origin.x, self.frame.origin.y + scrollTo, width, height);
+    CGRect rect = CGRectMake(self.frame.origin.x, self.frame.origin.y + scrollTo, 8, 8);
     [self scrollRectToVisible:rect animated:YES];
 }
 

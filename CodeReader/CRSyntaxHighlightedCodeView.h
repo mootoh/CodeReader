@@ -21,10 +21,11 @@
     NSString *searchText;
     CFMutableAttributedStringRef attributedCodeText;
     CTFramesetterRef framesetter;
-    CTFrameRef wholeFrame;
+    CTFrameRef currentFrame, nextFrame;
     CFRange *textRanges;
     CGRect prevViewframeRect;
     size_t textRangesCount;
+    size_t lineCount;
     id <CRSyntaxHighlightedCodeViewDelegate> shcvDelegate;
 }
 
