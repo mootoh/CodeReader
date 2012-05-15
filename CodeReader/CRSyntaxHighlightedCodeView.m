@@ -95,7 +95,7 @@ void printRect(CGRect *rect, NSString *prefix)
     // Calculate the content size of this scroll view based on the CT frame.
     CFRange range;
     CGSize scrollViewSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, codeText.length), NULL, CGSizeMake(self.frame.size.width, CGFLOAT_MAX), &range);
-    [self setContentSize:scrollViewSize];
+    [self setContentSize:CGSizeMake(self.frame.size.width, scrollViewSize.height)];
 }
 
 - (void) layoutSubviews
@@ -248,8 +248,8 @@ void printRect(CGRect *rect, NSString *prefix)
 
 - (CTFrameRef)drawFrameOf:(int)index InRect:(CGRect)rect context:(CGContextRef)context
 {
-    CGRect textRect = CGRectMake(rect.origin.x, rect.origin.y - index * rect.size.height + self.frame.origin.y, rect.size.width, rect.size.height);
-    CGPathRef path = CGPathCreateWithRect(textRect, NULL);
+//    printRect(&rect, @"drawFrameOf");
+    CGPathRef path = CGPathCreateWithRect(rect, NULL);
     
     CTFrameRef frame = CTFramesetterCreateFrame(framesetter, textRanges[index], path, NULL);
     CTFrameDraw(frame, context);
@@ -267,16 +267,43 @@ void printRect(CGRect *rect, NSString *prefix)
     CGContextTranslateCTM(context, 0.0, self.frame.size.height + self.frame.origin.y + self.bounds.origin.y);
     CGContextScaleCTM(context, 1.0, -1.0);
 
-    CGFloat y = rect.origin.y / (CGFloat)rect.size.height;
-    int index = (int)y;
+    // draw line number column
+    CGContextSetRGBFillColor(context, 0.9, 0.9, 0.9, 1.0);
+    CGRect lineNumberRect = CGRectMake(0, 0, 28, self.frame.size.height);
+    CGContextFillRect(context, lineNumberRect);
+
+    NSString *lineNumbers = @"48\n49\n50\n51\n52\n53\n54\n55";
+    CFMutableAttributedStringRef lineNumberText = CFAttributedStringCreateMutable(NULL, lineNumbers.length);
+    CFAttributedStringReplaceString(lineNumberText, CFRangeMake(0, 0), (__bridge CFStringRef)lineNumbers);
+    CTFontRef codeFont = CTFontCreateWithName(CFSTR("Inconsolata"), 16.0, NULL);
+    CFAttributedStringSetAttribute(lineNumberText, CFRangeMake(0, lineNumbers.length), kCTFontAttributeName, codeFont);
+
+    CGPathRef lineNumberPath = CGPathCreateWithRect(lineNumberRect, NULL);
+    CTFramesetterRef lineNumberFrameSetter = CTFramesetterCreateWithAttributedString(lineNumberText);
+    CTFrameRef lineNumberFrame = CTFramesetterCreateFrame(lineNumberFrameSetter, CFRangeMake(0, 0), lineNumberPath, NULL);
+    CTFrameDraw(lineNumberFrame, context);
+
+
+    CGFloat index_y = rect.origin.y / (CGFloat)rect.size.height;
+    int index = (int)index_y;
 
     if (currentFrame)
         CFRelease(currentFrame);
     if (nextFrame)
         CFRelease(nextFrame);
-    currentFrame = [self drawFrameOf:index InRect:rect context:context];
-    if (textRangesCount > 1)
-        nextFrame = [self drawFrameOf:index+1 InRect:rect context:context];
+
+    CGRect currentRect = rect;
+    currentRect.origin.y = rect.origin.y - index * rect.size.height + self.frame.origin.y;
+    currentFrame = [self drawFrameOf:index InRect:currentRect context:context];
+
+    if (textRangesCount > 1) {
+        index++;
+        CGFloat y = self.frame.origin.y;
+        CGFloat yy = rect.origin.y - index * rect.size.height + self.frame.origin.y;
+        CGFloat h = rect.size.height + yy;
+        CGRect nextRect = CGRectMake(rect.origin.x, y, rect.size.width, h);
+        nextFrame = [self drawFrameOf:index InRect:nextRect context:context];
+    }
 }
 
 - (void) setSearchText:(NSString *) st
@@ -355,9 +382,10 @@ void printRect(CGRect *rect, NSString *prefix)
 
 - (void) scrollToLine:(NSInteger) lineNumber
 {
-    float viewHeight = UIDeviceOrientationIsLandscape([UIDevice currentDevice].orientation)
-    ? (self.frame.size.width > self.frame.size.height ? self.frame.size.height : self.frame.size.width)
-    : (self.frame.size.width > self.frame.size.height ? self.frame.size.width : self.frame.size.height);
+    UIInterfaceOrientation orientation = [[UIApplication sharedApplication] statusBarOrientation];
+    float viewHeight = UIDeviceOrientationIsLandscape(orientation)
+        ? (self.frame.size.width > self.frame.size.height ? self.frame.size.height : self.frame.size.width)
+        : (self.frame.size.width > self.frame.size.height ? self.frame.size.width : self.frame.size.height);
     float height = self.contentSize.height/lineCount;
     float scrollTo = lineNumber * height;// + height * 12;
     if (scrollTo + viewHeight/2 < self.contentSize.height)
