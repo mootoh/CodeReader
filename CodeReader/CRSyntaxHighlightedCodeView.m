@@ -258,15 +258,8 @@ void printRect(CGRect *rect, NSString *prefix)
     return frame;
 }
 
-- (void)drawRect:(CGRect)rect
+- (void) drawLineNumberColumn:(CGContextRef)context
 {
-    if (! codeText) return;
-
-    CGContextRef context = UIGraphicsGetCurrentContext();
-    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-    CGContextTranslateCTM(context, 0.0, self.frame.size.height + self.frame.origin.y + self.bounds.origin.y);
-    CGContextScaleCTM(context, 1.0, -1.0);
-
     // draw line number column
     CGContextSetRGBFillColor(context, 0.9, 0.9, 0.9, 1.0);
     CGRect lineNumberRect = CGRectMake(0, 0, 28, self.frame.size.height);
@@ -282,7 +275,18 @@ void printRect(CGRect *rect, NSString *prefix)
     CTFramesetterRef lineNumberFrameSetter = CTFramesetterCreateWithAttributedString(lineNumberText);
     CTFrameRef lineNumberFrame = CTFramesetterCreateFrame(lineNumberFrameSetter, CFRangeMake(0, 0), lineNumberPath, NULL);
     CTFrameDraw(lineNumberFrame, context);
+}
 
+- (void)drawRect:(CGRect)rect
+{
+    if (! codeText) return;
+
+    CGContextRef context = UIGraphicsGetCurrentContext();
+    CGContextSetTextMatrix(context, CGAffineTransformIdentity);
+    CGContextTranslateCTM(context, 0.0, self.frame.size.height + self.frame.origin.y + self.bounds.origin.y);
+    CGContextScaleCTM(context, 1.0, -1.0);
+
+//    [self drawLineNumberColumn:context];
 
     CGFloat index_y = rect.origin.y / (CGFloat)rect.size.height;
     int index = (int)index_y;
