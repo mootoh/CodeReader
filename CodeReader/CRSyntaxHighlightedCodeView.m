@@ -23,10 +23,8 @@
     attributedCodeText = NULL;
     framesetter = NULL;
     currentFrame = NULL;
-    nextFrame = NULL;
-    textRanges = NULL;
+    lineRanges = NULL;
     prevViewframeRect = CGRectZero;
-    textRangesCount = 0;
     lineCount = 0;
     shcvDelegate = nil;
 }
@@ -51,7 +49,7 @@
 
 - (void)dealloc
 {
-    if (textRanges) free(textRanges);
+    if (lineRanges) free(lineRanges);
     if (framesetter) CFRelease(framesetter);
     if (attributedCodeText) CFRelease(attributedCodeText);
 }
@@ -96,6 +94,7 @@ void printRect(CGRect *rect, NSString *prefix)
     CFRange range;
     CGSize scrollViewSize = CTFramesetterSuggestFrameSizeWithConstraints(framesetter, CFRangeMake(0, codeText.length), NULL, CGSizeMake(self.frame.size.width, CGFLOAT_MAX), &range);
     [self setContentSize:CGSizeMake(self.frame.size.width, scrollViewSize.height)];
+//    [self setContentSize:CGSizeMake(self.frame.size.width, self.frame.size.height * 6)];
 }
 
 - (void) layoutSubviews
@@ -109,13 +108,14 @@ void printRect(CGRect *rect, NSString *prefix)
 
 - (void) collectTextRanges
 {
-    size_t TEXT_RANGE_MAX = 500;
-    if (textRanges)
-        free(textRanges);
-    textRanges = (CFRange *)malloc(sizeof(CFRange) * TEXT_RANGE_MAX);
-
+    size_t LINE_RANGE_MAX = 99999;
+    if (lineRanges)
+        free(lineRanges);
+    lineRanges = (CFRange *)malloc(sizeof(CFRange) * LINE_RANGE_MAX);
+    lineCount = 0;
+    
     CFRange fullRange = CFRangeMake(0, codeText.length);
-    textRangesCount=0;
+    lineRangesCount = 0;
     for (CFRange textRange = CFRangeMake(0, codeText.length);
          textRange.location < fullRange.length;
          ) {
@@ -128,20 +128,22 @@ void printRect(CGRect *rect, NSString *prefix)
             CFRelease(path);
             break;
         }
+
         CFArrayRef lines = CTFrameGetLines(frame);
         lineCount += CFArrayGetCount(lines);
+        for (int i=0; i<CFArrayGetCount(lines); i++) {
+            lineRanges[lineRangesCount++] = CTLineGetStringRange(CFArrayGetValueAtIndex(lines, i));
 
-        textRange = CTFrameGetVisibleStringRange(frame);
-        textRanges[textRangesCount++] = textRange;
-        if (textRangesCount >= TEXT_RANGE_MAX) {
-            TEXT_RANGE_MAX *= 2;
-            realloc(textRanges, TEXT_RANGE_MAX);
-            if (textRanges == NULL) {
-                NSLog(@"failed in reallocating text ranges array");
-                abort();
+            if (lineRangesCount >= LINE_RANGE_MAX) {
+                LINE_RANGE_MAX *= 2;
+                realloc(lineRanges, LINE_RANGE_MAX);
+                if (lineRanges == NULL) {
+                    NSLog(@"failed in reallocating line ranges array");
+                    abort();
+                }
             }
         }
-        
+        textRange = CTFrameGetVisibleStringRange(frame);
         CFRelease(frame);
         CFRelease(path);
 
@@ -246,18 +248,6 @@ void printRect(CGRect *rect, NSString *prefix)
     CGColorSpaceRelease(rgbColorSpace);
 }
 
-- (CTFrameRef)drawFrameOf:(int)index InRect:(CGRect)rect context:(CGContextRef)context
-{
-//    printRect(&rect, @"drawFrameOf");
-    CGPathRef path = CGPathCreateWithRect(rect, NULL);
-    
-    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, textRanges[index], path, NULL);
-    CTFrameDraw(frame, context);
-    
-    CFRelease(path);
-    return frame;
-}
-
 - (void) drawLineNumberColumn:(CGContextRef)context
 {
     // draw line number column
@@ -281,33 +271,29 @@ void printRect(CGRect *rect, NSString *prefix)
 {
     if (! codeText) return;
 
+    if (currentFrame)
+        CFRelease(currentFrame);
+
     CGContextRef context = UIGraphicsGetCurrentContext();
     CGContextSetTextMatrix(context, CGAffineTransformIdentity);
-    CGContextTranslateCTM(context, 0.0, self.frame.size.height + self.frame.origin.y + self.bounds.origin.y);
+    CGContextTranslateCTM(context, 0.0, self.frame.size.height + self.frame.origin.y);
     CGContextScaleCTM(context, 1.0, -1.0);
 
 //    [self drawLineNumberColumn:context];
 
-    CGFloat index_y = rect.origin.y / (CGFloat)rect.size.height;
-    int index = (int)index_y;
+    CGPathRef path = CGPathCreateWithRect(self.frame, NULL);
+    CGFloat frameOffsetY  = (CGFloat)lineCount * self.bounds.origin.y / self.contentSize.height;
+    int from = lineCount * self.bounds.origin.y / self.contentSize.height;
+    if (from < 0) from = 0;
+    if (from > lineCount-1) from = lineCount;
+    NSLog(@"from, all, frameOffsetY, boundsY rectY = %d, %lu, %f, %f, %f", from, lineCount, frameOffsetY, self.bounds.origin.y, rect.origin.y);
 
-    if (currentFrame)
-        CFRelease(currentFrame);
-    if (nextFrame)
-        CFRelease(nextFrame);
+    CTFrameRef frame = CTFramesetterCreateFrame(framesetter, CFRangeMake(lineRanges[from].location, 0), path, NULL);
+    CGContextTranslateCTM(context, 0.0, -self.bounds.origin.y);
 
-    CGRect currentRect = rect;
-    currentRect.origin.y = rect.origin.y - index * rect.size.height + self.frame.origin.y;
-    currentFrame = [self drawFrameOf:index InRect:currentRect context:context];
-
-    if (textRangesCount > 1) {
-        index++;
-        CGFloat y = self.frame.origin.y;
-        CGFloat yy = rect.origin.y - index * rect.size.height + self.frame.origin.y;
-        CGFloat h = rect.size.height + yy;
-        CGRect nextRect = CGRectMake(rect.origin.x, y, rect.size.width, h);
-        nextFrame = [self drawFrameOf:index InRect:nextRect context:context];
-    }
+    CTFrameDraw(frame, context);
+    currentFrame = frame;
+    CFRelease(path);
 }
 
 - (void) setSearchText:(NSString *) st
@@ -381,7 +367,6 @@ void printRect(CGRect *rect, NSString *prefix)
 {
     if ([self findTappedPoint:point InFrame:currentFrame])
         return;
-    [self findTappedPoint:point InFrame:nextFrame];
 }
 
 - (void) scrollToLine:(NSInteger) lineNumber
